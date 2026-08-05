@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Settings</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header>
+DAY CARE SETTINGS
+</header>
+
+
+<div class="container">
+
+<div class="card">
+
+<h2>Change Admin Password</h2>
+
+
+<input type="password" id="newpass" placeholder="Enter New Password">
+
+
+<button onclick="savePassword()">
+Save Password
+</button>
+
+
+<button class="back" onclick="window.location='dashboard.html'">
+Back Dashboard
+</button>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+function savePassword(){
+
+let pass=document.getElementById("newpass").value;
+
+
+if(pass==""){
+
+alert("Password Enter Kare");
+
+return;
+
+}
+
+
+localStorage.setItem("adminPassword",pass);
+
+
+alert("Password Saved Successfully");
+
+
+}
+
+
+</script>
+
+
+</body>
+</html>
