@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Day Care Dashboard</title>
+
 
 <style>
 
@@ -95,8 +97,8 @@ text-align:center;
 border-bottom:1px solid #ddd;
 }
 
-
 </style>
+
 
 </head>
 
@@ -109,7 +111,9 @@ DAY CARE MANAGEMENT SYSTEM
 </header>
 
 
+
 <div class="container">
+
 
 
 <div class="card">
@@ -117,6 +121,7 @@ DAY CARE MANAGEMENT SYSTEM
 <h2 style="text-align:center;margin-bottom:20px;">
 Dashboard
 </h2>
+
 
 
 <div class="grid">
@@ -165,6 +170,7 @@ Dashboard
 
 
 
+
 <div class="card">
 
 <h2>Student Fee History</h2>
@@ -193,6 +199,44 @@ Dashboard
 </table>
 
 </div>
+
+
+
+
+
+<div class="card">
+
+<h2>Registration History</h2>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Student Name</th>
+<th>Registration Fee</th>
+<th>Registration Date</th>
+
+</tr>
+
+
+</thead>
+
+
+
+<tbody id="registrationHistory">
+
+</tbody>
+
+
+
+</table>
+
+
+</div>
+
 
 
 
@@ -243,7 +287,10 @@ Dashboard
 </div>
 
 
+
 </div>
+
+
 
 
 
@@ -260,13 +307,15 @@ let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 
 // Total Students
 
-document.getElementById("students").innerHTML = students.length;
+document.getElementById("students").innerHTML =
+students.length;
 
 
 
-// Registration Fee
+// Registration Total
 
 let registration = 0;
+
 
 students.forEach(function(s){
 
@@ -280,13 +329,16 @@ document.getElementById("registration").innerHTML =
 
 
 
-// Fee Data
+
+
+// Fee History
 
 let totalFee = 0;
 
-let pending = 0;
+let totalPending = 0;
 
 let history = "";
+
 
 
 fees.forEach(function(f){
@@ -294,7 +346,8 @@ fees.forEach(function(f){
 
 totalFee += Number(f.paid || 0);
 
-pending += Number(f.pending || 0);
+totalPending += Number(f.pending || 0);
+
 
 
 history += `
@@ -324,7 +377,47 @@ document.getElementById("fees").innerHTML =
 
 
 document.getElementById("pending").innerHTML =
-"₹"+pending;
+"₹"+totalPending;
+
+
+document.getElementById("feeHistory").innerHTML =
+history;
+
+
+
+
+
+
+// Registration History
+
+let registrationHistory = "";
+
+
+students.forEach(function(s){
+
+
+registrationHistory += `
+
+<tr>
+
+<td>${s.name}</td>
+
+<td>₹${s.regfee || 0}</td>
+
+<td>${s.regdate || "-"}</td>
+
+</tr>
+
+`;
+
+});
+
+
+document.getElementById("registrationHistory").innerHTML =
+registrationHistory;
+
+
+
 
 
 
@@ -345,6 +438,8 @@ document.getElementById("expense").innerHTML =
 
 
 
+
+
 // Balance
 
 let balance = registration + totalFee - totalExpense;
@@ -354,9 +449,6 @@ document.getElementById("balance").innerHTML =
 "₹"+balance;
 
 
-
-document.getElementById("feeHistory").innerHTML =
-history;
 
 
 
@@ -371,4 +463,5 @@ window.location="index.html";
 
 
 </body>
+
 </html>
