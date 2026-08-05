@@ -1,3 +1,4 @@
+alert("SCRIPT JS CHAL RAHA HAI");
 
 
 import { database } from "./firebase.js";
