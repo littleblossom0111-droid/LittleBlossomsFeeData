@@ -17,28 +17,18 @@
 DAY CARE - FEE ENTRY
 </header>
 
-
 <div class="container">
-
 
 <div class="card">
 
 <h2>Enter Student Fee</h2>
 
-
-<label>Select Student</label>
-
 <select id="student" onchange="showFee()">
-
 <option value="">Select Student</option>
-
 </select>
 
 
-<label>Month</label>
-
 <select id="month">
-
 <option>January</option>
 <option>February</option>
 <option>March</option>
@@ -51,25 +41,21 @@ DAY CARE - FEE ENTRY
 <option>October</option>
 <option>November</option>
 <option>December</option>
-
 </select>
 
 
 <input type="number" id="totalfee" placeholder="Monthly Fee" readonly>
 
-
 <input type="number" id="paidfee" placeholder="Paid Fee">
-
 
 <input type="number" id="pendingfee" placeholder="Pending Fee" readonly>
 
 
 <label>Payment Date</label>
-
 <input type="date" id="date">
 
 
-<button onclick="saveFee()">
+<button id="feeBtn" onclick="saveFee()">
 Save Fee
 </button>
 
@@ -77,7 +63,6 @@ Save Fee
 <button class="back" onclick="window.location='dashboard.html'">
 Back Dashboard
 </button>
-
 
 </div>
 
@@ -93,26 +78,20 @@ Back Dashboard
 <thead>
 
 <tr>
-
 <th>Student</th>
 <th>Month</th>
 <th>Paid</th>
 <th>Pending</th>
 <th>Action</th>
-
-
 </tr>
 
 </thead>
 
 
-<tbody id="feeList">
-
-</tbody>
+<tbody id="feeList"></tbody>
 
 
 </table>
-
 
 </div>
 
@@ -128,6 +107,8 @@ let students = JSON.parse(localStorage.getItem("students")) || [];
 
 let fees = JSON.parse(localStorage.getItem("fees")) || [];
 
+let editFeeIndex = -1;
+
 
 
 // Student Dropdown
@@ -137,36 +118,35 @@ let select=document.getElementById("student");
 
 students.forEach(function(s){
 
-let option=document.createElement("option");
+let op=document.createElement("option");
 
-option.value=s.id;
+op.value=s.id;
 
-option.text=s.name;
+op.text=s.name;
 
-select.appendChild(option);
+select.appendChild(op);
 
 });
 
 
 
-
-// Show Monthly Fee
+// Show Fee
 
 function showFee(){
 
 let id=document.getElementById("student").value;
 
 
-let student=students.find(function(s){
+let s=students.find(function(x){
 
-return s.id==id;
+return x.id==id;
 
 });
 
 
-if(student){
+if(s){
 
-document.getElementById("totalfee").value=student.monthlyfee;
+document.getElementById("totalfee").value=s.monthlyfee;
 
 calculatePending();
 
@@ -177,20 +157,15 @@ calculatePending();
 
 
 
-// Pending Calculate
+document.getElementById("paidfee").addEventListener("input",calculatePending);
 
-document.getElementById("paidfee").addEventListener("input",function(){
-
-calculatePending();
-
-});
 
 
 function calculatePending(){
 
-let total=Number(document.getElementById("totalfee").value || 0);
+let total=Number(document.getElementById("totalfee").value||0);
 
-let paid=Number(document.getElementById("paidfee").value || 0);
+let paid=Number(document.getElementById("paidfee").value||0);
 
 
 document.getElementById("pendingfee").value=total-paid;
@@ -199,8 +174,7 @@ document.getElementById("pendingfee").value=total-paid;
 
 
 
-
-// Save Fee
+// Save / Update Fee
 
 function saveFee(){
 
@@ -208,18 +182,18 @@ function saveFee(){
 let id=document.getElementById("student").value;
 
 
-let student=students.find(function(s){
+let s=students.find(function(x){
 
-return s.id==id;
+return x.id==id;
 
 });
 
 
 let fee={
 
-student:student.name,
+student:s.name,
 
-studentId:student.id,
+studentId:s.id,
 
 month:document.getElementById("month").value,
 
@@ -235,30 +209,43 @@ date:document.getElementById("date").value
 
 
 
+if(editFeeIndex==-1){
+
 fees.push(fee);
-
-
-localStorage.setItem("fees",JSON.stringify(fees));
-
 
 alert("Fee Saved Successfully");
 
+}
 
-location.reload();
+else{
 
+fees[editFeeIndex]=fee;
+
+alert("Fee Updated Successfully");
+
+editFeeIndex=-1;
 
 }
 
 
 
+localStorage.setItem("fees",JSON.stringify(fees));
+
+location.reload();
+
+}
+
+
 
 // Show History
 
+function showFees(){
 
 let data="";
 
 
-fees.forEach(function(f){
+fees.forEach(function(f,index){
+
 
 data+=`
 
@@ -272,6 +259,18 @@ data+=`
 
 <td>₹${f.pending}</td>
 
+<td>
+
+<button class="edit" onclick="editFee(${index})">
+✏️
+</button>
+
+<button class="delete" onclick="deleteFee(${index})">
+🗑️
+</button>
+
+</td>
+
 </tr>
 
 `;
@@ -280,6 +279,100 @@ data+=`
 
 
 document.getElementById("feeList").innerHTML=data;
+
+}
+
+
+
+showFees();
+
+
+
+
+// Edit Fee
+
+function editFee(index){
+
+let pass=prompt("Enter Admin Password");
+
+
+if(pass==localStorage.getItem("adminPassword")){
+
+
+let f=fees[index];
+
+
+editFeeIndex=index;
+
+
+document.getElementById("student").value=f.studentId;
+
+document.getElementById("month").value=f.month;
+
+document.getElementById("totalfee").value=f.total;
+
+document.getElementById("paidfee").value=f.paid;
+
+document.getElementById("pendingfee").value=f.pending;
+
+document.getElementById("date").value=f.date;
+
+
+window.scrollTo(0,0);
+
+
+document.getElementById("feeBtn").innerHTML="Update Fee";
+
+
+}
+
+else{
+
+alert("Wrong Password");
+
+}
+
+}
+
+
+
+
+// Delete Fee
+
+function deleteFee(index){
+
+
+let pass=prompt("Enter Admin Password");
+
+
+if(pass==localStorage.getItem("adminPassword")){
+
+
+if(confirm("Delete Fee Entry?")){
+
+
+fees.splice(index,1);
+
+
+localStorage.setItem("fees",JSON.stringify(fees));
+
+
+location.reload();
+
+
+}
+
+
+}
+
+else{
+
+alert("Wrong Password");
+
+}
+
+}
+
 
 
 </script>
