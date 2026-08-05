@@ -29,6 +29,7 @@ loadStudents();
 
 function saveStudent(){
 
+alert("SAVE BUTTON WORKING")
 
 let student = {
 
