@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day Care Management System</title>
+
+<title>Day Care Dashboard</title>
 
 <style>
 
@@ -29,7 +31,7 @@ font-weight:bold;
 
 .container{
 width:95%;
-max-width:900px;
+max-width:1000px;
 margin:20px auto;
 }
 
@@ -55,51 +57,60 @@ border-radius:10px;
 text-align:center;
 }
 
-.box h2{
-margin-bottom:10px;
-}
-
 .buttons{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 gap:15px;
-margin-top:20px;
 }
 
 button{
 padding:15px;
-font-size:16px;
 border:none;
 border-radius:10px;
-cursor:pointer;
 background:#2196F3;
 color:white;
-}
-
-button:hover{
-background:#0b7dda;
+font-size:16px;
+cursor:pointer;
 }
 
 .logout{
 background:red;
 }
 
-.logout:hover{
-background:darkred;
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
 }
 
+th{
+background:#4CAF50;
+color:white;
+padding:10px;
+}
+
+td{
+padding:10px;
+text-align:center;
+border-bottom:1px solid #ddd;
+}
+
+
 </style>
+
 </head>
+
 
 <body>
 
+
 <header>
-
 DAY CARE MANAGEMENT SYSTEM
-
 </header>
 
+
 <div class="container">
+
 
 <div class="card">
 
@@ -107,106 +118,247 @@ DAY CARE MANAGEMENT SYSTEM
 Dashboard
 </h2>
 
+
 <div class="grid">
+
 
 <div class="box">
 <h2 id="students">0</h2>
 <p>Total Students</p>
 </div>
 
+
 <div class="box">
 <h2 id="registration">₹0</h2>
 <p>Registration Fee</p>
 </div>
 
+
 <div class="box">
 <h2 id="fees">₹0</h2>
-<p>Monthly Fees</p>
+<p>Fee Received</p>
 </div>
+
 
 <div class="box">
 <h2 id="pending">₹0</h2>
-<p>Pending Fees</p>
+<p>Pending Fee</p>
 </div>
+
 
 <div class="box">
 <h2 id="expense">₹0</h2>
-<p>Total Expense</p>
+<p>Expense</p>
 </div>
+
 
 <div class="box">
 <h2 id="balance">₹0</h2>
 <p>Balance</p>
 </div>
 
+
 </div>
 
 </div>
+
+
+
+
+<div class="card">
+
+<h2>Student Fee History</h2>
+
+
+<table>
+
+<thead>
+
+<tr>
+<th>Name</th>
+<th>Month</th>
+<th>Paid</th>
+<th>Pending</th>
+<th>Date</th>
+</tr>
+
+</thead>
+
+
+<tbody id="feeHistory">
+
+</tbody>
+
+
+</table>
+
+</div>
+
+
+
+
 
 <div class="card">
 
 <div class="buttons">
 
+
 <button onclick="window.location='students.html'">
 👧 Student Registration
 </button>
+
 
 <button onclick="window.location='fees.html'">
 💰 Fee Entry
 </button>
 
+
 <button onclick="window.location='expense.html'">
 💸 Expense Entry
 </button>
+
 
 <button onclick="window.location='reports.html'">
 📊 Monthly Reports
 </button>
 
+
 <button onclick="window.location='pending.html'">
 ⏳ Pending Fees
 </button>
+
 
 <button onclick="window.location='settings.html'">
 ⚙ Settings
 </button>
 
+
 <button class="logout" onclick="logout()">
 🚪 Logout
 </button>
 
-</div>
 
 </div>
 
 </div>
+
+
+</div>
+
+
 
 <script>
 
-let students=JSON.parse(localStorage.getItem("students"))||[];
 
-document.getElementById("students").innerHTML=students.length;
+let students = JSON.parse(localStorage.getItem("students")) || [];
 
-let registration=0;
+let fees = JSON.parse(localStorage.getItem("fees")) || [];
+
+let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+
+
+
+// Total Students
+
+document.getElementById("students").innerHTML = students.length;
+
+
+
+// Registration Fee
+
+let registration = 0;
 
 students.forEach(function(s){
 
-registration+=Number(s.regfee||0);
+registration += Number(s.regfee || 0);
 
 });
 
-document.getElementById("registration").innerHTML="₹"+registration;
 
-// अभी बाकी डेटा 0 रहेगा,
-// अगले स्टेप में Fee Entry और Expense जोड़ेंगे
+document.getElementById("registration").innerHTML =
+"₹"+registration;
 
-document.getElementById("fees").innerHTML="₹0";
 
-document.getElementById("pending").innerHTML="₹0";
 
-document.getElementById("expense").innerHTML="₹0";
+// Fee Data
 
-document.getElementById("balance").innerHTML="₹"+registration;
+let totalFee = 0;
+
+let pending = 0;
+
+let history = "";
+
+
+fees.forEach(function(f){
+
+
+totalFee += Number(f.paid || 0);
+
+pending += Number(f.pending || 0);
+
+
+history += `
+
+<tr>
+
+<td>${f.student}</td>
+
+<td>${f.month}</td>
+
+<td>₹${f.paid}</td>
+
+<td>₹${f.pending}</td>
+
+<td>${f.date}</td>
+
+</tr>
+
+`;
+
+});
+
+
+
+document.getElementById("fees").innerHTML =
+"₹"+totalFee;
+
+
+document.getElementById("pending").innerHTML =
+"₹"+pending;
+
+
+
+// Expense
+
+let totalExpense = 0;
+
+
+expenses.forEach(function(e){
+
+totalExpense += Number(e.amount || 0);
+
+});
+
+
+document.getElementById("expense").innerHTML =
+"₹"+totalExpense;
+
+
+
+// Balance
+
+let balance = registration + totalFee - totalExpense;
+
+
+document.getElementById("balance").innerHTML =
+"₹"+balance;
+
+
+
+document.getElementById("feeHistory").innerHTML =
+history;
+
+
 
 function logout(){
 
@@ -214,7 +366,9 @@ window.location="index.html";
 
 }
 
+
 </script>
+
 
 </body>
 </html>
