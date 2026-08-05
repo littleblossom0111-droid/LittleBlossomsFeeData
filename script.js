@@ -32,6 +32,8 @@ admission: document.getElementById("admission").value,
 dob: document.getElementById("dob").value,
 
 regfee: document.getElementById("regfee").value,
+regdate:document.getElementById("regdate").value,
+
 
 monthlyfee: document.getElementById("monthlyfee").value
 
