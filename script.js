@@ -1,3 +1,8 @@
+import { database } from "./firebase.js";
+
+import { ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+
 let students = JSON.parse(localStorage.getItem("students")) || [];
 
 let editIndex = -1;
