@@ -389,3 +389,7 @@ alert("Wrong Password");
 
 
 }
+window.saveStudent = saveStudent;
+window.searchStudent = searchStudent;
+window.editStudent = editStudent;
+window.deleteStudent = deleteStudent;
