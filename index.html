@@ -1,163 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Little Blossoms Day Care</title>
 
-<meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Little Blossoms Day Care Management System</title>
-
-<link rel="stylesheet" href="style.css">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 
-<!-- Sidebar -->
-
 <div class="sidebar">
 
-<div class="logo">
-<h2>🌸 Little Blossoms</h2>
-<p>Day Care Management</p>
-</div>
+    <h2>🌸 Little Blossoms</h2>
 
-<ul>
+    <button onclick="showPage('dashboard')">Dashboard</button>
 
-<li class="active">
-<i class="fa-solid fa-house"></i>
-<span>Dashboard</span>
-</li>
+    <button onclick="showPage('students')">Students</button>
 
-<li>
-<i class="fa-solid fa-user-plus"></i>
-<span>Students</span>
-</li>
+    <button onclick="showPage('fees')">Fees</button>
 
-<li>
-<i class="fa-solid fa-id-card"></i>
-<span>Registration</span>
-</li>
+    <button onclick="showPage('expenses')">Expenses</button>
 
-<li>
-<i class="fa-solid fa-indian-rupee-sign"></i>
-<span>Monthly Fees</span>
-</li>
-
-<li>
-<i class="fa-solid fa-clock-rotate-left"></i>
-<span>Payment History</span>
-</li>
-
-<li>
-<i class="fa-solid fa-triangle-exclamation"></i>
-<span>Pending Fees</span>
-</li>
-
-<li>
-<i class="fa-solid fa-wallet"></i>
-<span>Expenses</span>
-</li>
-
-<li>
-<i class="fa-solid fa-chart-column"></i>
-<span>Reports</span>
-</li>
-
-<li>
-<i class="fa-solid fa-gear"></i>
-<span>Settings</span>
-</li>
-
-</ul>
+    <button onclick="showPage('reports')">Reports</button>
 
 </div>
 
-<!-- Main -->
 
-<div class="main">
+<div class="content">
 
-<div class="topbar">
+    <!-- Dashboard -->
 
-<h1>Dashboard</h1>
+    <section id="dashboard" class="page">
 
-<div class="profile">
+        <h1>Dashboard</h1>
 
-<input
-type="text"
-placeholder="Search Student...">
+        <div class="cards">
 
-<button>
-<i class="fa-solid fa-magnifying-glass"></i>
-</button>
+            <div class="card">
+                <h3>Total Students</h3>
+                <h2 id="totalStudents">0</h2>
+            </div>
 
-</div>
+            <div class="card">
+                <h3>Monthly Fees</h3>
+                <h2 id="monthlyFees">₹0</h2>
+            </div>
 
-</div>
+            <div class="card">
+                <h3>Fees Received</h3>
+                <h2 id="feesReceived">₹0</h2>
+            </div>
 
-<!-- Dashboard Cards -->
+            <div class="card">
+                <h3>Pending Fees</h3>
+                <h2 id="pendingFees">₹0</h2>
+            </div>
 
-<div class="cards">
+            <div class="card">
+                <h3>Registration</h3>
+                <h2 id="registrationFees">₹0</h2>
+            </div>
 
-<div class="card income">
+            <div class="card">
+                <h3>Expenses</h3>
+                <h2 id="expenses">₹0</h2>
+            </div>
 
-<h3>Total Students</h3>
+            <div class="card">
+                <h3>Net Income</h3>
+                <h2 id="netIncome">₹0</h2>
+            </div>
 
-<h1 id="totalStudents">0</h1>
+        </div>
 
-</div>
-
-<div class="card fee">
-
-<h3>Total Monthly Fees</h3>
-
-<h1 id="totalFees">₹0</h1>
-
-</div>
-
-<div class="card receive">
-
-<h3>Fees Received</h3>
-
-<h1 id="feesReceived">₹0</h1>
-
-</div>
-
-<div class="card pending">
-
-<h3>Pending Fees</h3>
-
-<h1 id="pendingFees">₹0</h1>
+    </section>
 
 </div>
 
-<div class="card register">
+<script src="script.js"></script>
 
-<h3>Registration Received</h3>
-
-<h1 id="registrationFees">₹0</h1>
-
-</div>
-
-<div class="card expense">
-
-<h3>Total Expenses</h3>
-
-<h1 id="totalExpense">₹0</h1>
-
-</div>
-
-<div class="card profit">
-
-<h3>Net Income</h3>
-
-<h1 id="netIncome">₹0</h1>
-
-</div>
-
-</div>
+</body>
+</html>
