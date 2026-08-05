@@ -1,15 +1,18 @@
+
 let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let editIndex = -1;
 
 displayStudents();
 
 
-// Save Student
+// Save / Update Student
 
 function saveStudent(){
 
 let student = {
 
-id:"DC" + String(students.length + 1).padStart(3,"0"),
+id: editIndex == -1 ? "DC" + String(students.length + 1).padStart(3,"0") : students[editIndex].id,
 
 name:document.getElementById("name").value,
 
@@ -32,11 +35,24 @@ monthlyfee:document.getElementById("monthlyfee").value
 };
 
 
+if(editIndex == -1){
+
 students.push(student);
 
-localStorage.setItem("students",JSON.stringify(students));
-
 alert("Student Saved Successfully");
+
+}else{
+
+students[editIndex] = student;
+
+alert("Student Updated Successfully");
+
+editIndex = -1;
+
+}
+
+
+localStorage.setItem("students",JSON.stringify(students));
 
 location.reload();
 
@@ -52,7 +68,6 @@ let data="";
 
 
 students.forEach(function(s,index){
-
 
 data += `
 
@@ -79,7 +94,6 @@ data += `
 
 </td>
 
-
 </tr>
 
 `;
@@ -88,7 +102,6 @@ data += `
 
 
 document.getElementById("studentList").innerHTML=data;
-
 
 }
 
@@ -104,7 +117,6 @@ let data="";
 
 
 students.forEach(function(s,index){
-
 
 if(s.name.toLowerCase().includes(value)){
 
@@ -134,37 +146,58 @@ data += `
 
 </td>
 
-
 </tr>
 
 `;
 
 }
 
-
 });
 
 
 document.getElementById("studentList").innerHTML=data;
 
-
 }
 
 
 
-// Edit (अगले स्टेप में पूरा करेंगे)
+// Edit Student
 
 function editStudent(index){
 
-let pass=prompt("Enter Admin Password");
+let pass = prompt("Enter Admin Password");
+
+let savedPass = localStorage.getItem("adminPassword");
 
 
-let savedPass=localStorage.getItem("adminPassword");
+if(pass == savedPass){
 
 
-if(pass==savedPass){
+let s = students[index];
 
-alert("Edit Open");
+editIndex = index;
+
+
+document.getElementById("name").value=s.name;
+
+document.getElementById("father").value=s.father;
+
+document.getElementById("mother").value=s.mother;
+
+document.getElementById("mobile").value=s.mobile;
+
+document.getElementById("address").value=s.address;
+
+document.getElementById("admission").value=s.admission;
+
+document.getElementById("dob").value=s.dob;
+
+document.getElementById("regfee").value=s.regfee;
+
+document.getElementById("monthlyfee").value=s.monthlyfee;
+
+
+window.scrollTo(0,0);
 
 
 }else{
@@ -177,18 +210,19 @@ alert("Wrong Password");
 
 
 
+// Delete Student
+
 function deleteStudent(index){
 
-let pass=prompt("Enter Admin Password");
+let pass = prompt("Enter Admin Password");
+
+let savedPass = localStorage.getItem("adminPassword");
 
 
-let savedPass=localStorage.getItem("adminPassword");
+if(pass == savedPass){
 
 
-if(pass==savedPass){
-
-
-let confirmDelete=confirm("Delete Student?");
+let confirmDelete = confirm("Delete Student?");
 
 
 if(confirmDelete){
@@ -208,6 +242,4 @@ alert("Wrong Password");
 
 }
 
-
 }
-
