@@ -3,88 +3,179 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Day Care Dashboard</title>
+<title>Day Care Management System</title>
 
 <style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
 body{
-    margin:0;
-    font-family:Arial,sans-serif;
-    background:#f2f2f2;
+background:#f2f2f2;
 }
 
 header{
-    background:#4CAF50;
-    color:white;
-    padding:15px;
-    text-align:center;
-    font-size:24px;
+background:#4CAF50;
+color:white;
+padding:18px;
+text-align:center;
+font-size:26px;
+font-weight:bold;
 }
 
 .container{
-    width:90%;
-    margin:20px auto;
+width:95%;
+max-width:900px;
+margin:20px auto;
 }
 
 .card{
-    background:white;
-    padding:15px;
-    margin-bottom:15px;
-    border-radius:10px;
-    box-shadow:0 0 8px rgba(0,0,0,0.2);
+background:white;
+padding:15px;
+border-radius:10px;
+box-shadow:0 2px 8px rgba(0,0,0,.2);
+margin-bottom:20px;
 }
 
-h3{
-    margin-top:0;
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+}
+
+.box{
+background:#4CAF50;
+color:white;
+padding:20px;
+border-radius:10px;
+text-align:center;
+}
+
+.box h2{
+margin-bottom:10px;
+}
+
+.buttons{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+margin-top:20px;
 }
 
 button{
-    width:100%;
-    padding:12px;
-    margin-top:10px;
-    background:#4CAF50;
-    color:white;
-    border:none;
-    border-radius:8px;
-    font-size:16px;
-    cursor:pointer;
+padding:15px;
+font-size:16px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+background:#2196F3;
+color:white;
 }
 
 button:hover{
-    background:#388E3C;
+background:#0b7dda;
 }
-</style>
 
+.logout{
+background:red;
+}
+
+.logout:hover{
+background:darkred;
+}
+
+</style>
 </head>
+
 <body>
 
 <header>
-DAY CARE MANAGEMENT
+
+DAY CARE MANAGEMENT SYSTEM
+
 </header>
 
 <div class="container">
 
 <div class="card">
-<h3>Dashboard</h3>
 
-<p><b>Total Students :</b> 0</p>
-<p><b>Total Registration Fee :</b> ₹0</p>
-<p><b>Total Monthly Fee :</b> ₹0</p>
-<p><b>Total Pending Fee :</b> ₹0</p>
-<p><b>Total Expense :</b> ₹0</p>
-<p><b>Balance :</b> ₹0</p>
+<h2 style="text-align:center;margin-bottom:20px;">
+Dashboard
+</h2>
+
+<div class="grid">
+
+<div class="box">
+<h2 id="students">0</h2>
+<p>Total Students</p>
+</div>
+
+<div class="box">
+<h2 id="registration">₹0</h2>
+<p>Registration Fee</p>
+</div>
+
+<div class="box">
+<h2 id="fees">₹0</h2>
+<p>Monthly Fees</p>
+</div>
+
+<div class="box">
+<h2 id="pending">₹0</h2>
+<p>Pending Fees</p>
+</div>
+
+<div class="box">
+<h2 id="expense">₹0</h2>
+<p>Total Expense</p>
+</div>
+
+<div class="box">
+<h2 id="balance">₹0</h2>
+<p>Balance</p>
+</div>
+
+</div>
 
 </div>
 
 <div class="card">
-<button onclick="alert('Student Registration Page Next Step')">➕ Add Student</button>
 
-<button onclick="alert('Fee Entry Page Next Step')">💰 Fee Entry</button>
+<div class="buttons">
 
-<button onclick="alert('Expense Page Next Step')">💸 Expense</button>
+<button onclick="window.location='students.html'">
+👧 Student Registration
+</button>
 
-<button onclick="alert('Reports Next Step')">📊 Reports</button>
+<button onclick="window.location='fees.html'">
+💰 Fee Entry
+</button>
 
-<button onclick="logout()">🚪 Logout</button>
+<button onclick="window.location='expense.html'">
+💸 Expense Entry
+</button>
+
+<button onclick="window.location='reports.html'">
+📊 Monthly Reports
+</button>
+
+<button onclick="window.location='pending.html'">
+⏳ Pending Fees
+</button>
+
+<button onclick="window.location='settings.html'">
+⚙ Settings
+</button>
+
+<button class="logout" onclick="logout()">
+🚪 Logout
+</button>
+
+</div>
 
 </div>
 
@@ -92,8 +183,35 @@ DAY CARE MANAGEMENT
 
 <script>
 
+let students=JSON.parse(localStorage.getItem("students"))||[];
+
+document.getElementById("students").innerHTML=students.length;
+
+let registration=0;
+
+students.forEach(function(s){
+
+registration+=Number(s.regfee||0);
+
+});
+
+document.getElementById("registration").innerHTML="₹"+registration;
+
+// अभी बाकी डेटा 0 रहेगा,
+// अगले स्टेप में Fee Entry और Expense जोड़ेंगे
+
+document.getElementById("fees").innerHTML="₹0";
+
+document.getElementById("pending").innerHTML="₹0";
+
+document.getElementById("expense").innerHTML="₹0";
+
+document.getElementById("balance").innerHTML="₹"+registration;
+
 function logout(){
+
 window.location="index.html";
+
 }
 
 </script>
