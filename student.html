@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Registration</title>
+
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f2f2f2;
+    margin:0;
+}
+
+header{
+    background:#4CAF50;
+    color:white;
+    text-align:center;
+    padding:15px;
+    font-size:22px;
+}
+
+.container{
+    width:90%;
+    max-width:700px;
+    margin:20px auto;
+    background:white;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px #ccc;
+}
+
+input{
+    width:100%;
+    padding:10px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:6px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#388E3C;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+table,th,td{
+    border:1px solid #ccc;
+}
+
+th,td{
+    padding:8px;
+    text-align:center;
+}
+
+th{
+    background:#4CAF50;
+    color:white;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+Student Registration
+</header>
+
+<div class="container">
+
+<input type="text" id="name" placeholder="Student Name">
+
+<input type="text" id="father" placeholder="Father / Mother Name">
+
+<input type="text" id="mobile" placeholder="Mobile Number">
+
+<input type="text" id="address" placeholder="Address">
+
+<input type="date" id="admission">
+
+<input type="number" id="regfee" placeholder="Registration Fee">
+
+<input type="number" id="monthlyfee" placeholder="Monthly Fee">
+
+<button onclick="saveStudent()">Save Student</button>
+
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Monthly Fee</th>
+</tr>
+</thead>
+
+<tbody id="studentTable"></tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+showStudents();
+
+function saveStudent(){
+
+let student={
+id:Date.now(),
+name:document.getElementById("name").value,
+father:document.getElementById("father").value,
+mobile:document.getElementById("mobile").value,
+address:document.getElementById("address").value,
+admission:document.getElementById("admission").value,
+regfee:document.getElementById("regfee").value,
+monthlyfee:document.getElementById("monthlyfee").value
+};
+
+students.push(student);
+
+localStorage.setItem("students",JSON.stringify(students));
+
+alert("Student Saved Successfully");
+
+location.reload();
+
+}
+
+function showStudents(){
+
+let data="";
+
+students.forEach(function(s){
+
+data += `
+<tr>
+<td>${s.id}</td>
+<td>${s.name}</td>
+<td>₹${s.monthlyfee}</td>
+</tr>
+`;
+
+});
+
+document.getElementById("studentTable").innerHTML=data;
+
+}
+
+</script>
+
+</body>
+</html>
