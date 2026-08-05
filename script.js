@@ -1,8 +1,9 @@
-
 let students = JSON.parse(localStorage.getItem("students")) || [];
 
 let editIndex = -1;
 
+
+// Page load
 displayStudents();
 
 
@@ -12,27 +13,30 @@ function saveStudent(){
 
 let student = {
 
-id: editIndex == -1 ? "DC" + String(students.length + 1).padStart(3,"0") : students[editIndex].id,
+id: editIndex == -1 
+? "DC" + String(students.length + 1).padStart(3,"0") 
+: students[editIndex].id,
 
-name:document.getElementById("name").value,
+name: document.getElementById("name").value,
 
-father:document.getElementById("father").value,
+father: document.getElementById("father").value,
 
-mother:document.getElementById("mother").value,
+mother: document.getElementById("mother").value,
 
-mobile:document.getElementById("mobile").value,
+mobile: document.getElementById("mobile").value,
 
-address:document.getElementById("address").value,
+address: document.getElementById("address").value,
 
-admission:document.getElementById("admission").value,
+admission: document.getElementById("admission").value,
 
-dob:document.getElementById("dob").value,
+dob: document.getElementById("dob").value,
 
-regfee:document.getElementById("regfee").value,
+regfee: document.getElementById("regfee").value,
 
-monthlyfee:document.getElementById("monthlyfee").value
+monthlyfee: document.getElementById("monthlyfee").value
 
 };
+
 
 
 if(editIndex == -1){
@@ -41,7 +45,8 @@ students.push(student);
 
 alert("Student Saved Successfully");
 
-}else{
+}
+else{
 
 students[editIndex] = student;
 
@@ -54,13 +59,14 @@ editIndex = -1;
 
 localStorage.setItem("students",JSON.stringify(students));
 
+
 location.reload();
 
 }
 
 
 
-// Display Student
+// Show Students
 
 function displayStudents(){
 
@@ -68,6 +74,7 @@ let data="";
 
 
 students.forEach(function(s,index){
+
 
 data += `
 
@@ -81,7 +88,8 @@ data += `
 
 <td>₹${s.monthlyfee}</td>
 
-<td class="action">
+
+<td>
 
 <button class="edit" onclick="editStudent(${index})">
 ✏️ Edit
@@ -94,6 +102,7 @@ data += `
 
 </td>
 
+
 </tr>
 
 `;
@@ -101,13 +110,19 @@ data += `
 });
 
 
-document.getElementById("studentList").innerHTML=data;
+let list=document.getElementById("studentList");
+
+if(list){
+
+list.innerHTML=data;
+
+}
 
 }
 
 
 
-// Search Student
+// Search
 
 function searchStudent(){
 
@@ -117,6 +132,7 @@ let data="";
 
 
 students.forEach(function(s,index){
+
 
 if(s.name.toLowerCase().includes(value)){
 
@@ -133,7 +149,8 @@ data += `
 
 <td>₹${s.monthlyfee}</td>
 
-<td class="action">
+
+<td>
 
 <button class="edit" onclick="editStudent(${index})">
 ✏️ Edit
@@ -143,6 +160,7 @@ data += `
 <button class="delete" onclick="deleteStudent(${index})">
 🗑️ Delete
 </button>
+
 
 </td>
 
@@ -165,6 +183,7 @@ document.getElementById("studentList").innerHTML=data;
 
 function editStudent(index){
 
+
 let pass = prompt("Enter Admin Password");
 
 let savedPass = localStorage.getItem("adminPassword");
@@ -175,38 +194,54 @@ if(pass == savedPass){
 
 let s = students[index];
 
+
 editIndex = index;
 
 
-document.getElementById("name").value=s.name;
 
-document.getElementById("father").value=s.father;
+document.getElementById("name").value = s.name || "";
 
-document.getElementById("mother").value=s.mother;
+document.getElementById("father").value = s.father || "";
 
-document.getElementById("mobile").value=s.mobile;
+document.getElementById("mother").value = s.mother || "";
 
-document.getElementById("address").value=s.address;
+document.getElementById("mobile").value = s.mobile || "";
 
-document.getElementById("admission").value=s.admission;
+document.getElementById("address").value = s.address || "";
 
-document.getElementById("dob").value=s.dob;
+document.getElementById("admission").value = s.admission || "";
 
-document.getElementById("regfee").value=s.regfee;
+document.getElementById("dob").value = s.dob || "";
 
-document.getElementById("monthlyfee").value=s.monthlyfee;
+document.getElementById("regfee").value = s.regfee || "";
 
-
-window.scrollTo(0,0);
+document.getElementById("monthlyfee").value = s.monthlyfee || "";
 
 
-}else{
+
+document.getElementById("saveBtn").innerHTML="Update Student";
+
+
+window.scrollTo({
+
+top:0,
+
+behavior:"smooth"
+
+});
+
+
+}
+
+else{
 
 alert("Wrong Password");
 
 }
 
+
 }
+
 
 
 
@@ -214,7 +249,9 @@ alert("Wrong Password");
 
 function deleteStudent(index){
 
+
 let pass = prompt("Enter Admin Password");
+
 
 let savedPass = localStorage.getItem("adminPassword");
 
@@ -222,24 +259,34 @@ let savedPass = localStorage.getItem("adminPassword");
 if(pass == savedPass){
 
 
-let confirmDelete = confirm("Delete Student?");
+let check = confirm("Delete Student?");
 
 
-if(confirmDelete){
+if(check){
+
 
 students.splice(index,1);
 
+
 localStorage.setItem("students",JSON.stringify(students));
 
+
+alert("Student Deleted");
+
+
 location.reload();
+
 
 }
 
 
-}else{
+}
+
+else{
 
 alert("Wrong Password");
 
 }
+
 
 }
