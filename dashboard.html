@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day Care Dashboard</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#f2f2f2;
+}
+
+header{
+    background:#4CAF50;
+    color:white;
+    padding:15px;
+    text-align:center;
+    font-size:24px;
+}
+
+.container{
+    width:90%;
+    margin:20px auto;
+}
+
+.card{
+    background:white;
+    padding:15px;
+    margin-bottom:15px;
+    border-radius:10px;
+    box-shadow:0 0 8px rgba(0,0,0,0.2);
+}
+
+h3{
+    margin-top:0;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#388E3C;
+}
+</style>
+
+</head>
+<body>
+
+<header>
+DAY CARE MANAGEMENT
+</header>
+
+<div class="container">
+
+<div class="card">
+<h3>Dashboard</h3>
+
+<p><b>Total Students :</b> 0</p>
+<p><b>Total Registration Fee :</b> ₹0</p>
+<p><b>Total Monthly Fee :</b> ₹0</p>
+<p><b>Total Pending Fee :</b> ₹0</p>
+<p><b>Total Expense :</b> ₹0</p>
+<p><b>Balance :</b> ₹0</p>
+
+</div>
+
+<div class="card">
+<button onclick="alert('Student Registration Page Next Step')">➕ Add Student</button>
+
+<button onclick="alert('Fee Entry Page Next Step')">💰 Fee Entry</button>
+
+<button onclick="alert('Expense Page Next Step')">💸 Expense</button>
+
+<button onclick="alert('Reports Next Step')">📊 Reports</button>
+
+<button onclick="logout()">🚪 Logout</button>
+
+</div>
+
+</div>
+
+<script>
+
+function logout(){
+window.location="index.html";
+}
+
+</script>
+
+</body>
+</html>
