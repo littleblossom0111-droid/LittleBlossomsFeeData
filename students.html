@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
 <meta charset="UTF-8">
@@ -11,109 +12,172 @@
 
 </head>
 
+
 <body>
+
 
 <header>
 DAY CARE - STUDENT REGISTRATION
 </header>
 
 
+
 <div class="container">
+
 
 
 <div class="card">
 
+
 <h2>Add New Student</h2>
+
 
 
 <input type="text" id="name" placeholder="Student Name">
 
+
 <input type="text" id="father" placeholder="Father Name">
+
 
 <input type="text" id="mother" placeholder="Mother Name">
 
+
 <input type="number" id="mobile" placeholder="Mobile Number">
+
 
 <textarea id="address" placeholder="Address"></textarea>
 
+
+
 <label>Admission Date</label>
+
 <input type="date" id="admission">
 
 
+
 <label>Date of Birth</label>
+
 <input type="date" id="dob">
 
 
+
 <input type="number" id="regfee" placeholder="One Time Registration Fee">
+
+
+
 <label>Registration Fee Date</label>
 
 <input type="date" id="regdate">
-  
+
+
 
 <input type="number" id="monthlyfee" placeholder="Monthly Fee">
 
 
-<button id="saveBtn"onclick="saveStudent()">
+
+
+
+<button id="saveBtn" onclick="saveStudent()">
+
 Save Student
+
 </button>
+
+
 
 
 <button class="back" onclick="window.location='dashboard.html'">
+
 Back To Dashboard
+
 </button>
+
 
 
 </div>
 
 
 
+
+
+
+
 <div class="card">
+
 
 <h2>Student List</h2>
 
 
-<input class="search" 
-type="text" 
-id="search" 
+
+
+<input class="search"
+
+type="text"
+
+id="search"
+
 placeholder="Search Student Name"
+
 onkeyup="searchStudent()">
+
+
+
 
 
 <table>
 
+
 <thead>
 
+
 <tr>
+
 <th>ID</th>
+
 <th>Name</th>
+
 <th>Mobile</th>
+
 <th>Monthly Fee</th>
+
 <th>Action</th>
 
+
 </tr>
+
 
 </thead>
 
 
+
+
 <tbody id="studentList">
 
+
 </tbody>
+
 
 
 </table>
 
 
+
 </div>
 
 
+
+
+
 </div>
+
+
+
 
 
 <script type="module" src="script.js"></script>
 
 
 
-
-
 </body>
+
 </html>
