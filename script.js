@@ -3,7 +3,7 @@ let students = JSON.parse(localStorage.getItem("students")) || [];
 let editIndex = -1;
 
 
-// Page load
+// Page Load
 displayStudents();
 
 
@@ -38,7 +38,6 @@ monthlyfee: document.getElementById("monthlyfee").value
 };
 
 
-
 if(editIndex == -1){
 
 students.push(student);
@@ -59,14 +58,13 @@ editIndex = -1;
 
 localStorage.setItem("students",JSON.stringify(students));
 
-
 location.reload();
 
 }
 
 
 
-// Show Students
+// Display Student List
 
 function displayStudents(){
 
@@ -74,7 +72,6 @@ let data="";
 
 
 students.forEach(function(s,index){
-
 
 data += `
 
@@ -88,20 +85,17 @@ data += `
 
 <td>₹${s.monthlyfee}</td>
 
-
 <td>
 
 <button class="edit" onclick="editStudent(${index})">
 ✏️ Edit
 </button>
 
-
 <button class="delete" onclick="deleteStudent(${index})">
 🗑️ Delete
 </button>
 
 </td>
-
 
 </tr>
 
@@ -122,7 +116,7 @@ list.innerHTML=data;
 
 
 
-// Search
+// Search Student
 
 function searchStudent(){
 
@@ -132,7 +126,6 @@ let data="";
 
 
 students.forEach(function(s,index){
-
 
 if(s.name.toLowerCase().includes(value)){
 
@@ -149,18 +142,15 @@ data += `
 
 <td>₹${s.monthlyfee}</td>
 
-
 <td>
 
 <button class="edit" onclick="editStudent(${index})">
 ✏️ Edit
 </button>
 
-
 <button class="delete" onclick="deleteStudent(${index})">
 🗑️ Delete
 </button>
-
 
 </td>
 
@@ -179,25 +169,24 @@ document.getElementById("studentList").innerHTML=data;
 
 
 
-// Edit Student
+// EDIT STUDENT
 
 function editStudent(index){
-
 
 let pass = prompt("Enter Admin Password");
 
 let savedPass = localStorage.getItem("adminPassword");
 
 
-if(pass == savedPass){
+if(pass === savedPass){
 
 
 let s = students[index];
 
-
 editIndex = index;
 
 
+// Form Fill
 
 document.getElementById("name").value = s.name || "";
 
@@ -218,17 +207,20 @@ document.getElementById("regfee").value = s.regfee || "";
 document.getElementById("monthlyfee").value = s.monthlyfee || "";
 
 
+// Button Change
 
-document.getElementById("saveBtn").innerHTML="Update Student";
+let btn=document.getElementById("saveBtn");
+
+if(btn){
+
+btn.innerHTML="Update Student";
+
+}
 
 
-window.scrollTo({
+// Top par le jana
 
-top:0,
-
-behavior:"smooth"
-
-});
+window.scrollTo(0,0);
 
 
 }
@@ -239,46 +231,35 @@ alert("Wrong Password");
 
 }
 
-
 }
 
 
 
-
-// Delete Student
+// DELETE STUDENT
 
 function deleteStudent(index){
 
-
 let pass = prompt("Enter Admin Password");
-
 
 let savedPass = localStorage.getItem("adminPassword");
 
 
-if(pass == savedPass){
-
+if(pass === savedPass){
 
 let check = confirm("Delete Student?");
 
 
 if(check){
 
-
 students.splice(index,1);
-
 
 localStorage.setItem("students",JSON.stringify(students));
 
-
 alert("Student Deleted");
-
 
 location.reload();
 
-
 }
-
 
 }
 
@@ -287,6 +268,5 @@ else{
 alert("Wrong Password");
 
 }
-
 
 }
