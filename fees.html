@@ -20,23 +20,268 @@ DAY CARE - FEE ENTRY
 
 <div class="container">
 
+
 <div class="card">
 
-<h2>Fee Entry</h2>
+<h2>Enter Student Fee</h2>
 
-<p>यहाँ Student की Monthly Fee Entry होगी।</p>
+
+<label>Select Student</label>
+
+<select id="student" onchange="showFee()">
+
+<option value="">Select Student</option>
+
+</select>
+
+
+<label>Month</label>
+
+<select id="month">
+
+<option>January</option>
+<option>February</option>
+<option>March</option>
+<option>April</option>
+<option>May</option>
+<option>June</option>
+<option>July</option>
+<option>August</option>
+<option>September</option>
+<option>October</option>
+<option>November</option>
+<option>December</option>
+
+</select>
+
+
+<input type="number" id="totalfee" placeholder="Monthly Fee" readonly>
+
+
+<input type="number" id="paidfee" placeholder="Paid Fee">
+
+
+<input type="number" id="pendingfee" placeholder="Pending Fee" readonly>
+
+
+<label>Payment Date</label>
+
+<input type="date" id="date">
+
+
+<button onclick="saveFee()">
+Save Fee
+</button>
 
 
 <button class="back" onclick="window.location='dashboard.html'">
-Back To Dashboard
+Back Dashboard
 </button>
 
 
 </div>
 
+
+
+<div class="card">
+
+<h2>Fee History</h2>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>Student</th>
+<th>Month</th>
+<th>Paid</th>
+<th>Pending</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="feeList">
+
+</tbody>
+
+
+</table>
+
+
 </div>
+
+
+</div>
+
+
+
+<script>
+
+
+let students = JSON.parse(localStorage.getItem("students")) || [];
+
+let fees = JSON.parse(localStorage.getItem("fees")) || [];
+
+
+
+// Student Dropdown
+
+let select=document.getElementById("student");
+
+
+students.forEach(function(s){
+
+let option=document.createElement("option");
+
+option.value=s.id;
+
+option.text=s.name;
+
+select.appendChild(option);
+
+});
+
+
+
+
+// Show Monthly Fee
+
+function showFee(){
+
+let id=document.getElementById("student").value;
+
+
+let student=students.find(function(s){
+
+return s.id==id;
+
+});
+
+
+if(student){
+
+document.getElementById("totalfee").value=student.monthlyfee;
+
+calculatePending();
+
+}
+
+}
+
+
+
+
+// Pending Calculate
+
+document.getElementById("paidfee").addEventListener("input",function(){
+
+calculatePending();
+
+});
+
+
+function calculatePending(){
+
+let total=Number(document.getElementById("totalfee").value || 0);
+
+let paid=Number(document.getElementById("paidfee").value || 0);
+
+
+document.getElementById("pendingfee").value=total-paid;
+
+}
+
+
+
+
+// Save Fee
+
+function saveFee(){
+
+
+let id=document.getElementById("student").value;
+
+
+let student=students.find(function(s){
+
+return s.id==id;
+
+});
+
+
+let fee={
+
+student:student.name,
+
+studentId:student.id,
+
+month:document.getElementById("month").value,
+
+total:document.getElementById("totalfee").value,
+
+paid:document.getElementById("paidfee").value,
+
+pending:document.getElementById("pendingfee").value,
+
+date:document.getElementById("date").value
+
+};
+
+
+
+fees.push(fee);
+
+
+localStorage.setItem("fees",JSON.stringify(fees));
+
+
+alert("Fee Saved Successfully");
+
+
+location.reload();
+
+
+}
+
+
+
+
+// Show History
+
+
+let data="";
+
+
+fees.forEach(function(f){
+
+data+=`
+
+<tr>
+
+<td>${f.student}</td>
+
+<td>${f.month}</td>
+
+<td>₹${f.paid}</td>
+
+<td>₹${f.pending}</td>
+
+</tr>
+
+`;
+
+});
+
+
+document.getElementById("feeList").innerHTML=data;
+
+
+</script>
 
 
 </body>
 </html>
-
