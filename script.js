@@ -1,7 +1,8 @@
-alert("script.js loaded");
+
 
 import { database } from "./firebase.js";
 
+alert("script.js loaded");
 import { 
 ref,
 push,
