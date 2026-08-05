@@ -1,90 +1,167 @@
 import { database } from "./firebase.js";
 
-import { ref, push, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+import { 
+ref,
+push,
+set,
+onValue,
+remove,
+update
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 
-let students = JSON.parse(localStorage.getItem("students")) || [];
+let students = [];
 
-let editIndex = -1;
+let editId = null;
 
 
 // Page Load
-displayStudents();
+
+loadStudents();
 
 
-// Save / Update Student
+
+// SAVE / UPDATE STUDENT
 
 function saveStudent(){
 
+
 let student = {
 
-id: editIndex == -1 
-? "DC" + String(students.length + 1).padStart(3,"0") 
-: students[editIndex].id,
 
-name: document.getElementById("name").value,
+name:document.getElementById("name").value,
 
-father: document.getElementById("father").value,
+father:document.getElementById("father").value,
 
-mother: document.getElementById("mother").value,
+mother:document.getElementById("mother").value,
 
-mobile: document.getElementById("mobile").value,
+mobile:document.getElementById("mobile").value,
 
-address: document.getElementById("address").value,
+address:document.getElementById("address").value,
 
-admission: document.getElementById("admission").value,
+admission:document.getElementById("admission").value,
 
-dob: document.getElementById("dob").value,
+dob:document.getElementById("dob").value,
 
-regfee: document.getElementById("regfee").value,
+regfee:document.getElementById("regfee").value,
+
 regdate:document.getElementById("regdate").value,
 
+monthlyfee:document.getElementById("monthlyfee").value
 
-monthlyfee: document.getElementById("monthlyfee").value
 
 };
 
 
-if(editIndex == -1){
 
-students.push(student);
 
-alert("Student Saved Successfully");
+// UPDATE
 
-}
-else{
+if(editId){
 
-students[editIndex] = student;
+
+update(ref(database,"students/"+editId),student)
+
+.then(()=>{
 
 alert("Student Updated Successfully");
 
-editIndex = -1;
+location.reload();
+
+});
+
 
 }
 
 
-localStorage.setItem("students",JSON.stringify(students));
+
+// NEW SAVE
+
+else{
+
+
+let newRef = push(ref(database,"students"));
+
+
+set(newRef,student)
+
+.then(()=>{
+
+alert("Student Saved Online Successfully");
 
 location.reload();
 
+});
+
+
+}
+
+
 }
 
 
 
-// Display Student List
+
+
+
+// LOAD STUDENTS FROM FIREBASE
+
+
+function loadStudents(){
+
+
+onValue(ref(database,"students"),function(snapshot){
+
+
+students=[];
+
+
+snapshot.forEach(function(child){
+
+
+students.push({
+
+id:child.key,
+
+...child.val()
+
+});
+
+
+});
+
+
+
+displayStudents();
+
+
+});
+
+
+}
+
+
+
+
+
+
+
+// DISPLAY STUDENTS
+
 
 function displayStudents(){
+
 
 let data="";
 
 
-students.forEach(function(s,index){
+students.forEach(function(s){
+
 
 data += `
 
-<tr>
 
-<td>${s.id}</td>
+<tr>
 
 <td>${s.name}</td>
 
@@ -92,26 +169,35 @@ data += `
 
 <td>₹${s.monthlyfee}</td>
 
+
 <td>
 
-<button class="edit" onclick="editStudent(${index})">
+
+<button class="edit" onclick="editStudent('${s.id}')">
 ✏️ Edit
 </button>
 
-<button class="delete" onclick="deleteStudent(${index})">
+
+<button class="delete" onclick="deleteStudent('${s.id}')">
 🗑️ Delete
 </button>
 
+
 </td>
+
 
 </tr>
 
+
 `;
+
 
 });
 
 
+
 let list=document.getElementById("studentList");
+
 
 if(list){
 
@@ -119,29 +205,38 @@ list.innerHTML=data;
 
 }
 
+
 }
 
 
 
-// Search Student
+
+
+
+
+
+// SEARCH
+
 
 function searchStudent(){
 
+
 let value=document.getElementById("search").value.toLowerCase();
+
 
 let data="";
 
 
-students.forEach(function(s,index){
+students.forEach(function(s){
+
 
 if(s.name.toLowerCase().includes(value)){
 
 
 data += `
 
-<tr>
 
-<td>${s.id}</td>
+<tr>
 
 <td>${s.name}</td>
 
@@ -149,83 +244,91 @@ data += `
 
 <td>₹${s.monthlyfee}</td>
 
+
 <td>
 
-<button class="edit" onclick="editStudent(${index})">
+
+<button onclick="editStudent('${s.id}')">
 ✏️ Edit
 </button>
 
-<button class="delete" onclick="deleteStudent(${index})">
+
+<button onclick="deleteStudent('${s.id}')">
 🗑️ Delete
 </button>
 
+
 </td>
 
+
 </tr>
+
 
 `;
 
 }
 
+
 });
+
 
 
 document.getElementById("studentList").innerHTML=data;
 
+
 }
+
+
+
+
+
 
 
 
 // EDIT STUDENT
 
-function editStudent(index){
 
-let pass = prompt("Enter Admin Password");
-
-let savedPass = localStorage.getItem("adminPassword");
+function editStudent(id){
 
 
-if(pass === savedPass){
+let pass=prompt("Enter Admin Password");
 
 
-let s = students[index];
-
-editIndex = index;
+if(pass==localStorage.getItem("adminPassword")){
 
 
-// Form Fill
-
-document.getElementById("name").value = s.name || "";
-
-document.getElementById("father").value = s.father || "";
-
-document.getElementById("mother").value = s.mother || "";
-
-document.getElementById("mobile").value = s.mobile || "";
-
-document.getElementById("address").value = s.address || "";
-
-document.getElementById("admission").value = s.admission || "";
-
-document.getElementById("dob").value = s.dob || "";
-
-document.getElementById("regfee").value = s.regfee || "";
-
-document.getElementById("monthlyfee").value = s.monthlyfee || "";
+let s=students.find(x=>x.id==id);
 
 
-// Button Change
 
-let btn=document.getElementById("saveBtn");
-
-if(btn){
-
-btn.innerHTML="Update Student";
-
-}
+editId=id;
 
 
-// Top par le jana
+
+document.getElementById("name").value=s.name || "";
+
+document.getElementById("father").value=s.father || "";
+
+document.getElementById("mother").value=s.mother || "";
+
+document.getElementById("mobile").value=s.mobile || "";
+
+document.getElementById("address").value=s.address || "";
+
+document.getElementById("admission").value=s.admission || "";
+
+document.getElementById("dob").value=s.dob || "";
+
+document.getElementById("regfee").value=s.regfee || "";
+
+document.getElementById("regdate").value=s.regdate || "";
+
+document.getElementById("monthlyfee").value=s.monthlyfee || "";
+
+
+
+document.getElementById("saveBtn").innerHTML="Update Student";
+
 
 window.scrollTo(0,0);
 
@@ -238,42 +341,51 @@ alert("Wrong Password");
 
 }
 
+
 }
+
+
+
+
+
 
 
 
 // DELETE STUDENT
 
-function deleteStudent(index){
 
-let pass = prompt("Enter Admin Password");
-
-let savedPass = localStorage.getItem("adminPassword");
+function deleteStudent(id){
 
 
-if(pass === savedPass){
-
-let check = confirm("Delete Student?");
+let pass=prompt("Enter Admin Password");
 
 
-if(check){
+if(pass==localStorage.getItem("adminPassword")){
 
-students.splice(index,1);
 
-localStorage.setItem("students",JSON.stringify(students));
+if(confirm("Delete Student?")){
+
+
+remove(ref(database,"students/"+id))
+
+.then(()=>{
 
 alert("Student Deleted");
 
-location.reload();
+});
+
 
 }
 
+
 }
+
 
 else{
 
 alert("Wrong Password");
 
 }
+
 
 }
