@@ -398,3 +398,5 @@ window.saveStudent = saveStudent;
 window.searchStudent = searchStudent;
 window.editStudent = editStudent;
 window.deleteStudent = deleteStudent;
+document.getElementById("saveBtn").addEventListener("click", saveStudent);
+
