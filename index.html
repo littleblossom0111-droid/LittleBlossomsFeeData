@@ -1,86 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Little Blossoms Day Care</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Day Care Management Login</title>
 
-    <link rel="stylesheet" href="style.css">
+<style>
+body{
+    margin:0;
+    padding:0;
+    font-family:Arial, sans-serif;
+    background:#4CAF50;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+.login-box{
+    background:white;
+    padding:30px;
+    width:320px;
+    border-radius:15px;
+    box-shadow:0 0 20px rgba(0,0,0,.3);
+    text-align:center;
+}
+
+h2{
+    color:#4CAF50;
+}
+
+input{
+    width:90%;
+    padding:12px;
+    margin:10px 0;
+    border:1px solid #ccc;
+    border-radius:8px;
+    font-size:16px;
+}
+
+button{
+    width:95%;
+    padding:12px;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#388E3C;
+}
+
+#msg{
+    color:red;
+    margin-top:10px;
+}
+</style>
+
 </head>
-
 <body>
 
-<div class="sidebar">
+<div class="login-box">
 
-    <h2>🌸 Little Blossoms</h2>
+<h2>DAY CARE LOGIN</h2>
 
-    <button onclick="showPage('dashboard')">Dashboard</button>
+<input type="password" id="password" placeholder="Enter Password">
 
-    <button onclick="showPage('students')">Students</button>
+<button onclick="login()">Login</button>
 
-    <button onclick="showPage('fees')">Fees</button>
-
-    <button onclick="showPage('expenses')">Expenses</button>
-
-    <button onclick="showPage('reports')">Reports</button>
+<p id="msg"></p>
 
 </div>
 
+<script>
 
-<div class="content">
+if(localStorage.getItem("adminPassword")==null){
+    localStorage.setItem("adminPassword","1234");
+}
 
-    <!-- Dashboard -->
+function login(){
 
-    <section id="dashboard" class="page">
+let pass=document.getElementById("password").value;
 
-        <h1>Dashboard</h1>
+let saved=localStorage.getItem("adminPassword");
 
-        <div class="cards">
+if(pass==saved){
 
-            <div class="card">
-                <h3>Total Students</h3>
-                <h2 id="totalStudents">0</h2>
-            </div>
+window.location="dashboard.html";
 
-            <div class="card">
-                <h3>Monthly Fees</h3>
-                <h2 id="monthlyFees">₹0</h2>
-            </div>
+}else{
 
-            <div class="card">
-                <h3>Fees Received</h3>
-                <h2 id="feesReceived">₹0</h2>
-            </div>
+document.getElementById("msg").innerHTML="Wrong Password";
 
-            <div class="card">
-                <h3>Pending Fees</h3>
-                <h2 id="pendingFees">₹0</h2>
-            </div>
+}
 
-            <div class="card">
-                <h3>Registration</h3>
-                <h2 id="registrationFees">₹0</h2>
-            </div>
+}
 
-            <div class="card">
-                <h3>Expenses</h3>
-                <h2 id="expenses">₹0</h2>
-            </div>
-
-            <div class="card">
-                <h3>Net Income</h3>
-                <h2 id="netIncome">₹0</h2>
-            </div>
-
-        </div>
-
-    </section>
-
-</div>
-
-<script src="script.js"></script>
+</script>
 
 </body>
 </html>
