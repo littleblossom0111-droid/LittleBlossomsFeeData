@@ -1,236 +1,158 @@
-/* ==========================================
-   Little Blossoms Day Care Management
-   script.js - Part 1
-========================================== */
-
-// ---------- Local Storage ----------
-
 let students = JSON.parse(localStorage.getItem("students")) || [];
-let payments = JSON.parse(localStorage.getItem("payments")) || [];
-let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
 
-// ---------- Save Data ----------
 
-function saveData() {
+// Student Save
+function saveStudent(){
 
-    localStorage.setItem("students", JSON.stringify(students));
-    localStorage.setItem("payments", JSON.stringify(payments));
-    localStorage.setItem("expenses", JSON.stringify(expenses));
+let student = {
 
-}
+id: "DC" + String(students.length + 1).padStart(3,"0"),
 
-// ---------- Dashboard ----------
+name: document.getElementById("name").value,
 
-function updateDashboard(){
+father: document.getElementById("father").value,
 
-    document.getElementById("totalStudents").innerHTML = students.length;
+mother: document.getElementById("mother").value,
 
-    let totalMonthly = 0;
-    let totalRegistration = 0;
+mobile: document.getElementById("mobile").value,
 
-    students.forEach(s=>{
+address: document.getElementById("address").value,
 
-        totalMonthly += Number(s.monthlyFee);
+admission: document.getElementById("admission").value,
 
-        if(s.registrationPaid)
-            totalRegistration += Number(s.registrationFee);
+dob: document.getElementById("dob").value,
 
-    });
+regfee: document.getElementById("regfee").value,
 
-    let received = 0;
+monthlyfee: document.getElementById("monthlyfee").value
 
-    payments.forEach(p=>{
+};
 
-        received += Number(p.amount);
 
-    });
+students.push(student);
 
-    let expense = 0;
+localStorage.setItem("students", JSON.stringify(students));
 
-    expenses.forEach(e=>{
 
-        expense += Number(e.amount);
+alert("Student Saved Successfully");
 
-    });
 
-    let pending = totalMonthly - received;
-
-    if(pending < 0)
-        pending = 0;
-
-    document.getElementById("monthlyFees").innerHTML =
-    "₹"+totalMonthly;
-
-    document.getElementById("feesReceived").innerHTML =
-    "₹"+received;
-
-    document.getElementById("pendingFees").innerHTML =
-    "₹"+pending;
-
-    document.getElementById("registrationFees").innerHTML =
-    "₹"+totalRegistration;
-
-    document.getElementById("expenses").innerHTML =
-    "₹"+expense;
-
-    document.getElementById("netIncome").innerHTML =
-    "₹"+((received+totalRegistration)-expense);
+window.location.reload();
 
 }
 
-// ---------- Add Student ----------
 
-function addStudent(name,parent,mobile,monthlyFee,registrationFee){
 
-    let obj={
+// Student List Show
 
-        id:Date.now(),
+function displayStudents(){
 
-        name:name,
+let table="";
 
-        parent:parent,
 
-        mobile:mobile,
+students.forEach(function(s){
 
-        monthlyFee:Number(monthlyFee),
-
-        registrationFee:Number(registrationFee),
-
-        registrationPaid:false
-
-    };
-
-    students.push(obj);
-
-    saveData();
-
-    updateDashboard();
-
-    loadStudents();
-
-}
-
-// ---------- Student Table ----------
-
-function loadStudents(){
-
-    let tbody=document.getElementById("studentTableBody");
-
-    if(!tbody) return;
-
-    tbody.innerHTML="";
-
-    students.forEach((s,index)=>{
-
-        tbody.innerHTML += `
+table += `
 
 <tr>
 
-<td>${index+1}</td>
+<td>${s.id}</td>
 
 <td>${s.name}</td>
 
-<td>${s.parent}</td>
-
 <td>${s.mobile}</td>
 
-<td>₹${s.monthlyFee}</td>
-
-<td>
-
-${s.registrationPaid
-?
-"<span style='color:green'>Paid</span>"
-:
-"<span style='color:red'>Pending</span>"
-}
-
-</td>
-
-<td>
-
-<button onclick="deleteStudent(${s.id})">
-
-Delete
-
-</button>
-
-</td>
+<td>₹${s.monthlyfee}</td>
 
 </tr>
 
 `;
 
-    });
+});
+
+
+let list=document.getElementById("studentList");
+
+if(list){
+list.innerHTML=table;
+}
 
 }
 
-// ---------- Delete Student ----------
 
-function deleteStudent(id){
 
-    if(confirm("Delete Student?")){
+// Search Student
 
-        students =
-        students.filter(x=>x.id!=id);
+function searchStudent(){
 
-        saveData();
+let value=document.getElementById("search").value.toLowerCase();
 
-        loadStudents();
 
-        updateDashboard();
+let table="";
 
-    }
 
-}
+students.filter(function(s){
 
-// ---------- Registration Paid ----------
+return s.name.toLowerCase().includes(value);
 
-function registrationPaid(id){
+}).forEach(function(s){
 
-    students.forEach(s=>{
 
-        if(s.id==id){
+table +=`
 
-            s.registrationPaid=true;
+<tr>
 
-        }
+<td>${s.id}</td>
 
-    });
+<td>${s.name}</td>
 
-    saveData();
+<td>${s.mobile}</td>
 
-    loadStudents();
+<td>₹${s.monthlyfee}</td>
 
-    updateDashboard();
+</tr>
 
-}
+`;
 
-// ---------- Navigation ----------
+});
 
-function showPage(id){
 
-    let pages =
-    document.querySelectorAll(".page");
+document.getElementById("studentList").innerHTML=table;
 
-    pages.forEach(p=>{
-
-        p.style.display="none";
-
-    });
-
-    document.getElementById(id).style.display="block";
 
 }
 
-// ---------- Start ----------
 
-window.onload=function(){
+// Dashboard Update
 
-    updateDashboard();
+function updateDashboard(){
 
-    loadStudents();
+let totalStudents = students.length;
 
-    showPage("dashboard");
+
+let totalRegistration = 0;
+
+
+students.forEach(function(s){
+
+totalRegistration += Number(s.regfee || 0);
+
+});
+
+
+if(document.getElementById("students"))
+document.getElementById("students").innerHTML=totalStudents;
+
+
+if(document.getElementById("registration"))
+document.getElementById("registration").innerHTML="₹"+totalRegistration;
+
 
 }
+
+
+// Page Load
+
+displayStudents();
+
+updateDashboard();
