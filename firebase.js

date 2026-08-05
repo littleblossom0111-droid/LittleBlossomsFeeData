@@ -1,0 +1,31 @@
+// Firebase Setup
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+
+const firebaseConfig = {
+
+apiKey: "AIzaSyCuVEBaDBwfVyHH1gLcRe4NsdzH7VGv5Rs",
+
+authDomain: "littleblossoms1310.firebaseapp.com",
+
+projectId: "littleblossoms1310",
+
+storageBucket: "littleblossoms1310.firebasestorage.app",
+
+messagingSenderId: "587542332129",
+
+appId: "1:587542332129:web:9189780370e5b9d3adeda0"
+
+};
+
+
+const app = initializeApp(firebaseConfig);
+
+
+const database = getDatabase(app);
+
+
+export {database};
