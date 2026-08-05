@@ -1,3 +1,5 @@
+alert("script.js loaded");
+
 import { database } from "./firebase.js";
 
 import { 
