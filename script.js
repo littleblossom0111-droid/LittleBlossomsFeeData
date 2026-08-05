@@ -156,16 +156,58 @@ document.getElementById("studentList").innerHTML=data;
 
 function editStudent(index){
 
-alert("Edit Feature Next Step Me Add Hoga");
+let pass=prompt("Enter Admin Password");
+
+
+let savedPass=localStorage.getItem("adminPassword");
+
+
+if(pass==savedPass){
+
+alert("Edit Open");
+
+
+}else{
+
+alert("Wrong Password");
+
+}
 
 }
 
 
-
-// Delete (अगले स्टेप में Password के साथ जोड़ेंगे)
 
 function deleteStudent(index){
 
-alert("Delete Feature Next Step Me Add Hoga");
+let pass=prompt("Enter Admin Password");
+
+
+let savedPass=localStorage.getItem("adminPassword");
+
+
+if(pass==savedPass){
+
+
+let confirmDelete=confirm("Delete Student?");
+
+
+if(confirmDelete){
+
+students.splice(index,1);
+
+localStorage.setItem("students",JSON.stringify(students));
+
+location.reload();
 
 }
+
+
+}else{
+
+alert("Wrong Password");
+
+}
+
+
+}
+
